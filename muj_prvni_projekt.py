@@ -70,14 +70,15 @@ for slovo in selected_text:
     else:
         pass
 
-print(f"""There are {len(selected_text)} words in the selected text.
-There are {title_case} titlecase words.
-There are {upper_case} uppercase words.
-There are {lower_case} lowercase words.
-There are {numeric_case} numeric strings.
-The sum of all the numbers {numeric_sum}.""",
-ODDELOVAC,
-sep="\n"
+print(
+    f"There are {len(selected_text)} words in the selected text.",
+    f"There are {title_case} titlecase words.",
+    f"There are {upper_case} uppercase words.",
+    f"There are {lower_case} lowercase words.",
+    f"There are {numeric_case} numeric strings.",
+    f"The sum of all the numbers {numeric_sum}.",
+    ODDELOVAC,
+    sep="\n"
 )
 
 # SLOUPCOVY GRAF - urceni nejdelsiho slova
