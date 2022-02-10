@@ -30,7 +30,7 @@ if (jmeno in uzivatele.keys()) and (password == uzivatele[jmeno]):
 else:
     print(f"Unregistered user {jmeno}. Terminating the program.")
     print(ODDELOVAC)
-    quit()
+    exit()
 
 # Nabídka analýzy jednoho ze tří textů pro registrovaného uživatele.
 selected_number = input("Enter a number btw. 1 and 3 to select:")
@@ -71,13 +71,13 @@ for slovo in selected_text:
         pass
 
 print(f"""There are {len(selected_text)} words in the selected text.
-    There are {title_case} titlecase words.
-    There are {upper_case} uppercase words.
-    There are {lower_case} lowercase words.
-    There are {numeric_case} numeric strings.
-    The sum of all the numbers {numeric_sum}.""",
-    ODDELOVAC,
-    sep="\n"
+There are {title_case} titlecase words.
+There are {upper_case} uppercase words.
+There are {lower_case} lowercase words.
+There are {numeric_case} numeric strings.
+The sum of all the numbers {numeric_sum}.""",
+ODDELOVAC,
+sep="\n"
 )
 
 # SLOUPCOVY GRAF - urceni nejdelsiho slova
@@ -101,12 +101,21 @@ print(
     ODDELOVAC,
     sep = "\n"
 )
-for radek in range(1,(len(calculator.keys())+1)):
-    print(
-        " " * (3-len(str(radek))),
-        f"{radek}|",
-        ("*" * calculator[radek]),
-        (" " * (nejdelsi+10-calculator[radek])),
-        f"|{calculator[radek]}",
-        sep = ""
-    )
+for radek in range(1,nejdelsi+1):
+    if radek in calculator.keys():
+        print(
+            " " * (3-len(str(radek))),
+            f"{radek}|",
+            ("*" * calculator[radek]),
+            (" " * (nejdelsi+10-calculator[radek])),
+            f"|{calculator[radek]}",
+            sep = ""
+        )
+    else:
+        print(
+            " " * (3 - len(str(radek))),
+            f"{radek}|",
+            " " * (nejdelsi + 10),
+            f"|{0}",
+            sep = ""
+        )
