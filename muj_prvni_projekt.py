@@ -1,6 +1,6 @@
 # Deklarace proměnných
 '''
-author =
+author = Miroslav Kopriva
 '''
 TEXTS = ['''
 Situated about 10 miles west of Kemmerer, Fossil Butte is a ruggedly impressive
@@ -17,15 +17,30 @@ fossils in the world. The richest fossil fish deposits are found in multiple lim
 other freshwater genera and herring similar to those in modern oceans. Other fish such as paddlefish,
 garpike and stingray are also present.'''
 ]
-ODDELOVAC = "-" * 40
+ODDELOVAC = "-" * 50
 uzivatele = dict(bob="123", ann="pass123", mike="password123", liz="pass123")
+selected_text = []
+clean_text = []
+ciste_slovo = ""
+
+title_case = 0
+upper_case = 0
+lower_case = 0
+numeric_case = 0
+numeric_sum = 0
+
+nejdelsi = 0
+list_text = []
+calculator = {}     # pocitadlo slov podle jejich delky
+vypis = {}          # vypisuje slova do seznamu dle delky slov
+
 # Vyžádání přihlašovacích údajů (přihlašovacího jména a hesla) od uživatelů
-# a kontrola, zda-li jsou v databazi uzivatelu.
+# a kontrola, zda-li jsou v databazi uzivatelu.)
 jmeno = input("username: ")
 password = input("password: ")
 if (jmeno in uzivatele.keys()) and (password == uzivatele[jmeno]):
     print(ODDELOVAC)
-    print(f"Welcome to the app, {jmeno}.\nWe have 3 texts to be analyzed.")
+    print(f"Welcome to the app, {jmeno}.\n We have 3 texts to be analyzed.")
     print(ODDELOVAC)
 else:
     print(f"Unregistered user {jmeno}. Terminating the program.")
@@ -39,39 +54,33 @@ if not selected_number.isnumeric():
     exit()
 elif selected_number.isnumeric() and (int(selected_number) in [1, 2, 3]):
     print(ODDELOVAC)
-
 else:
     print(f"Entered number {selected_number} is not between 1 and 3. Terminating the program.")
     exit()
 
-
-# Nabídka analýzy jednoho ze tří textů pro registrovaného uživatele.
+# Nabídka analýzy jednoho ze tří textů pro registrovaného uživatele
 selected_text = list(TEXTS[int(selected_number)-1].split())
-
-ciste_slovo = ""
-title_case = 0
-upper_case = 0
-lower_case = 0
-numeric_case = 0
-numeric_sum = 0
 
 # Ocisteni slov od nepotrebnych znaku (.,;:!).
 for slovo in selected_text:
-    ciste_slovo = slovo.strip(".,;:!")
-    if ciste_slovo.istitle():
+    clean_text.append(slovo.strip(".,;:!"))
+
+# Pocitadlo slov s jednotlivymi vlastnostmi a vytisteni
+for slovo in clean_text:
+    if slovo.istitle():
         title_case += 1
-    elif ciste_slovo.isupper():
+    elif slovo.isupper():
         upper_case += 1
-    elif ciste_slovo.islower():
+    elif slovo.islower():
         lower_case += 1
-    elif ciste_slovo.isnumeric():
+    elif slovo.isnumeric():
         numeric_case += 1
-        numeric_sum += int(ciste_slovo)
+        numeric_sum += int(slovo)
     else:
         pass
 
 print(
-    f"There are {len(selected_text)} words in the selected text.",
+    f"There are {len(clean_text)} words in the selected text.",
     f"There are {title_case} titlecase words.",
     f"There are {upper_case} uppercase words.",
     f"There are {lower_case} lowercase words.",
@@ -81,24 +90,31 @@ print(
     sep="\n"
 )
 
-# SLOUPCOVY GRAF - urceni nejdelsiho slova
-nejdelsi = 0
-list_text = []
-calculator = {}
-for slovo in selected_text:
+# Urceni nejdelsiho slova
+for slovo in clean_text:
     if len(slovo) > nejdelsi:
         nejdelsi = len(slovo)
 
-for polozka in selected_text:
+# Pocitadlo slov textu dle delky (calculator) a naplneni vypisu ocistenymi slovy
+for polozka in clean_text:
     if len(polozka) in calculator.keys():
         calculator[len(polozka)] += 1
+        vypis[len(polozka)].append(polozka)
     else:
         calculator[len(polozka)] = 1
+        vypis[len(polozka)] = [polozka,]
 
-print(f"Prehled poctu: {sorted(calculator.items())}")
+# Prehledove vypsani jednotlivych slov dle poctu
+for index in range(1,nejdelsi+1):
+    print(f"{index}, {vypis.get(index,0)}")
+
+print(ODDELOVAC, ODDELOVAC, sep ="\n")
+print(f"Calculation summary: {sorted(calculator.items())}")
+
 print(
     ODDELOVAC,
-    "LEN| OCCURENCES"+(" " * (nejdelsi-1))+"|NR.",
+    ODDELOVAC,
+    "LEN| OCCURENCES"+(" " * (max(calculator.values()) + 4))+"|NR.",
     ODDELOVAC,
     sep = "\n"
 )
@@ -108,7 +124,7 @@ for radek in range(1,nejdelsi+1):
             " " * (3-len(str(radek))),
             f"{radek}|",
             ("*" * calculator[radek]),
-            (" " * (nejdelsi+10-calculator[radek])),
+            (" " * (max(calculator.values()) + 15 - calculator[radek])),
             f"|{calculator[radek]}",
             sep = ""
         )
@@ -116,7 +132,14 @@ for radek in range(1,nejdelsi+1):
         print(
             " " * (3 - len(str(radek))),
             f"{radek}|",
-            " " * (nejdelsi + 10),
+            " " * (max(calculator.values()) + 15),
             f"|{0}",
             sep = ""
         )
+print(ODDELOVAC)
+print(
+    f"From 1 to {nejdelsi} sign words",
+    " "* (max(calculator.values()) + 19 - len(str(f"{nejdelsi}")) - len(str(f"From 1 to {nejdelsi} sign words"))),
+    f"|{len(clean_text)} words"
+)
+print(ODDELOVAC)
